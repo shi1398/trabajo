@@ -1,18 +1,18 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
-//ÀûÓÃÃæ»ı¼ÓÈ¨¼ÆËã¶¥µã·¨Ïß
+//åˆ©ç”¨é¢ç§¯åŠ æƒè®¡ç®—é¡¶ç‚¹æ³•çº¿
 using namespace std;
 struct vec3 {
     double x, y, z;
     vec3(double x_ = 3.0f, double y_ = 3.0f, double z_ = 3.0f) : x(x_), y(y_), z(z_) {}
 
-   // ÏòÁ¿+
+   // å‘é‡+
 vec3 operator+(const vec3& v) const {
     return vec3(x + v.x, y + v.y, z + v.z);
 }
 
-// ÏòÁ¿×ÔÔö
+// å‘é‡è‡ªå¢
 vec3& operator+=(const vec3& v) {
     x += v.x;
     y += v.y;
@@ -20,23 +20,23 @@ vec3& operator+=(const vec3& v) {
     return *this;
 }
 
-// ÏòÁ¿-
+// å‘é‡-
 vec3 operator-(const vec3& v) const {
     return vec3(x - v.x, y - v.y, z - v.z);
 }
 
-// ÏòÁ¿*
+// å‘é‡*
 double dot(const vec3& v) const {
     return x * v.x + y * v.y + z * v.z;
 }
 
-// ÏòÁ¿Óë±êÁ¿Ïà³Ë£¨ÖØÔØ * ÔËËã·û£©,ÔÊĞíÏòÁ¿*±êÁ¿
+// å‘é‡ä¸æ ‡é‡ç›¸ä¹˜ï¼ˆé‡è½½ * è¿ç®—ç¬¦ï¼‰,å…è®¸å‘é‡*æ ‡é‡
 vec3 operator*(double scalar) const {
     return vec3(x * scalar, y * scalar, z * scalar);
 }
 };
 
- //¼ÆËã²æ»ı£¬²æ»ı¹«Ê½£ºN = AB*AC£¬¼ÆËã·¨Ïß
+ //è®¡ç®—å‰ç§¯ï¼Œå‰ç§¯å…¬å¼ï¼šN = AB*ACï¼Œè®¡ç®—æ³•çº¿
 vec3 crossProduct(const vec3& v1, const vec3& v2) {
     return vec3(
         v1.y * v2.z - v1.z * v2.y,
@@ -45,28 +45,28 @@ vec3 crossProduct(const vec3& v1, const vec3& v2) {
     );
 }
 
- //¹éÒ»»¯
+ //å½’ä¸€åŒ–
 vec3 normalize(const vec3& v) {
     double length = sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
     if (length == 0) return vec3(0.0f, 0.0f, 0.0f); 
     return vec3(v.x / length, v.y / length, v.z / length);
 }
 
-// ¼ÆËã·¨Ïß°´ÃæÃæ»ı¼ÓÈ¨
+// è®¡ç®—æ³•çº¿æŒ‰é¢é¢ç§¯åŠ æƒ
 vector<vec3> calcularNormalesPorVertice(const vector<vec3>& vertices, const vector<vector<int>>& indices) {
-    vector<vec3> normales(vertices.size(), vec3(0, 0, 0));  // ³õÊ¼»¯ËùÓĞ¶¥µã·¨ÏßÎª0
+    vector<vec3> normales(vertices.size(), vec3(0, 0, 0));  // åˆå§‹åŒ–æ‰€æœ‰é¡¶ç‚¹æ³•çº¿ä¸º0
 
-     //±éÀúÃ¿¸öÃæ
+     //éå†æ¯ä¸ªé¢
     for (const auto& face : indices) {
         vec3 A = vertices[face[0]];
         vec3 B = vertices[face[1]];
         vec3 C = vertices[face[2]];
 
-        // ¼ÆËã±ßÏòÁ¿
+        // è®¡ç®—è¾¹å‘é‡
         vec3 AB = B - A;
         vec3 AC = C - A;
 
-         //Ê¹ÓÃ²æ»ı¼ÆËãÃæµÄ·¨Ïß
+         //ä½¿ç”¨å‰ç§¯è®¡ç®—é¢çš„æ³•çº¿
         vec3 faceNormal = crossProduct(AB, AC);
 
         normales[face[0]] += faceNormal;
@@ -74,7 +74,7 @@ vector<vec3> calcularNormalesPorVertice(const vector<vec3>& vertices, const vect
         normales[face[2]] += faceNormal;
     }
 
-    // ¹éÒ»»¯
+    // å½’ä¸€åŒ–
     for (auto& normal : normales) {
         normal = normalize(normal);
     }
@@ -83,7 +83,7 @@ vector<vec3> calcularNormalesPorVertice(const vector<vec3>& vertices, const vect
 }
 
 int main() {
-     //¶¥µãÁĞ±í
+     //é¡¶ç‚¹åˆ—è¡¨
     vector<vec3> vertices = {
         vec3(0, 0, 0),
         vec3(1, 0, 0),
@@ -91,20 +91,20 @@ int main() {
         vec3(0, 0, 1)
     };
 
-     //ÃæµÄ¶¥µãË÷ÒıÁĞ±í
+     //é¢çš„é¡¶ç‚¹ç´¢å¼•åˆ—è¡¨
     vector<vector<int>> indices = {
-        {0, 1, 2},  // Ãæ1
-        {0, 1, 3},  // Ãæ2
-        {0, 2, 3},  // Ãæ3
-        {1, 2, 3}   // Ãæ4
+        {0, 1, 2},  // é¢1
+        {0, 1, 3},  // é¢2
+        {0, 2, 3},  // é¢3
+        {1, 2, 3}   // é¢4
     };
 
-    // ¼ÆËã°´Ãæ»ı¼ÓÈ¨µÄ¶¥µã·¨Ïß
+    // è®¡ç®—æŒ‰é¢ç§¯åŠ æƒçš„é¡¶ç‚¹æ³•çº¿
     vector<vec3> normales = calcularNormalesPorVertice(vertices, indices);
 
-     //Êä³öÃ¿¸ö¶¥µãµÄ·¨Ïß
+     //è¾“å‡ºæ¯ä¸ªé¡¶ç‚¹çš„æ³•çº¿
     for (size_t i = 0; i < normales.size(); ++i) {
-        cout << "¶¥µã " << i + 1 << " µÄ·¨Ïß: "
+        cout << "Normal del vÃ©rtice " << i + 1 << " : "
             << normales[i].x << ", " << normales[i].y << ", " << normales[i].z << endl;
     }
 
