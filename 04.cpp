@@ -1,20 +1,20 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
-//ÏàÁÚ½Ç¶È¼ÓÈ¨
+//ç›¸é‚»è§’åº¦åŠ æƒ
 using namespace std;
 
-// ¶¨ÒåÒ»¸öÈıÎ¬ÏòÁ¿½á¹¹Ìå
+// å®šä¹‰ä¸€ä¸ªä¸‰ç»´å‘é‡ç»“æ„ä½“
 struct vec3 {
     double x, y, z;
     vec3(double x_ = 4.0f, double y_ = 4.0f, double z_ = 4.0f) : x(x_), y(y_), z(z_) {}
 
-    // ÏòÁ¿+
+    // å‘é‡+
     vec3 operator+(const vec3& v) const {
         return vec3(x + v.x, y + v.y, z + v.z);
     }
 
-     //ÏòÁ¿×ÔÔö
+     //å‘é‡è‡ªå¢
     vec3& operator+=(const vec3& v) {
         x += v.x;
         y += v.y;
@@ -22,28 +22,28 @@ struct vec3 {
         return *this;
     }
 
-     //ÏòÁ¿-
+     //å‘é‡-
     vec3 operator-(const vec3& v) const {
         return vec3(x - v.x, y - v.y, z - v.z);
     }
 
-    // ÏòÁ¿*
+    // å‘é‡*
     double dot(const vec3& v) const {
         return x * v.x + y * v.y + z * v.z;
     }
 
-    // ÏòÁ¿length
+    // å‘é‡length
     double length() const {
         return sqrt(x * x + y * y + z * z);
     }
 
-    // ÏòÁ¿Óë±êÁ¿Ïà³Ë£¨ÖØÔØ * ÔËËã·û£©,ÔÊĞíÏòÁ¿*±êÁ¿
+    // å‘é‡ä¸æ ‡é‡ç›¸ä¹˜ï¼ˆé‡è½½ * è¿ç®—ç¬¦ï¼‰,å…è®¸å‘é‡*æ ‡é‡
    vec3 operator*(double scalar) const {
         return vec3(x * scalar, y * scalar, z * scalar);
     }
 };
 
-   // ¼ÆËã²æ»ı£¬²æ»ı¹«Ê½£ºN = AB*AC£¬¼ÆËã·¨Ïß
+   // è®¡ç®—å‰ç§¯ï¼Œå‰ç§¯å…¬å¼ï¼šN = AB*ACï¼Œè®¡ç®—æ³•çº¿
    vec3 crossProduct(const vec3& v1, const vec3& v2) {
         return vec3(
         v1.y * v2.z - v1.z * v2.y,
@@ -52,51 +52,51 @@ struct vec3 {
     );
 }
 
-   // ¹éÒ»»¯
+   // å½’ä¸€åŒ–
    vec3 normalize(const vec3& v) {
         double length = v.length();
         if (length == 0) return vec3(0.0f, 0.0f, 0.0f); 
         return vec3(v.x / length, v.y / length, v.z / length);
 }
 
-    // ¼ÆËã½Ç¶È£¨cot£©
+    // è®¡ç®—è§’åº¦ï¼ˆcotï¼‰
     double calculateAngle(const vec3& v1, const vec3& v2) {
        double dotProduct = v1.dot(v2);
        double lengths = v1.length() * v2.length();
        if (lengths == 0) return 0.0f; 
-       return acos(dotProduct / lengths);  // ·´ÓàÏÒµÃµ½½Ç¶È
+       return acos(dotProduct / lengths);  // åä½™å¼¦å¾—åˆ°è§’åº¦
 }
 
-// ¼ÆËã°´½Ç¶È¼ÓÈ¨µÄ¶¥µã·¨Ïß
+// è®¡ç®—æŒ‰è§’åº¦åŠ æƒçš„é¡¶ç‚¹æ³•çº¿
 vector<vec3> calcularNormalesPorVertice(const vector<vec3>& vertices, const vector<vector<int>>& indices) {
-    vector<vec3> normales(vertices.size(), vec3(0, 0, 0));  // ³õÊ¼»¯ËùÓĞ¶¥µã·¨ÏßÎª0
+    vector<vec3> normales(vertices.size(), vec3(0, 0, 0));  // åˆå§‹åŒ–æ‰€æœ‰é¡¶ç‚¹æ³•çº¿ä¸º0
 
-    // ±éÀúÃ¿¸öÃæ£¨Èı½ÇĞÎ£©
+    // éå†æ¯ä¸ªé¢ï¼ˆä¸‰è§’å½¢ï¼‰
     for (const auto& face : indices) {
         vec3 A = vertices[face[0]];
         vec3 B = vertices[face[1]];
         vec3 C = vertices[face[2]];
 
-        // ¼ÆËã±ßÏòÁ¿
+        // è®¡ç®—è¾¹å‘é‡
         vec3 AB = B - A;
         vec3 AC = C - A;
         vec3 BC = C - B;
 
-        // ¼ÆËãÈı½ÇĞÎÃæµÄ·¨Ïß
+        // è®¡ç®—ä¸‰è§’å½¢é¢çš„æ³•çº¿
         vec3 normal = crossProduct(AB, AC);
 
-         //¼ÆËãÃ¿¸ö¶¥µãµÄÄÚ½Ç£¨Ê¹ÓÃcot£©
-        double angleA = calculateAngle(AB, AC);  // ½ÇA
-        double angleB = calculateAngle(AB, BC);  // ½ÇB
-        double angleC = calculateAngle(AC, BC); // ½ÇC
+         //è®¡ç®—æ¯ä¸ªé¡¶ç‚¹çš„å†…è§’ï¼ˆä½¿ç”¨cotï¼‰
+        double angleA = calculateAngle(AB, AC);  // è§’A
+        double angleB = calculateAngle(AB, BC);  // è§’B
+        double angleC = calculateAngle(AC, BC); // è§’C
 
-        // °´½Ç¶È¼ÓÈ¨·¨Ïß²¢ÀÛ¼Óµ½¶ÔÓ¦µÄ¶¥µã
+        // æŒ‰è§’åº¦åŠ æƒæ³•çº¿å¹¶ç´¯åŠ åˆ°å¯¹åº”çš„é¡¶ç‚¹
         normales[face[0]] += normalize(normal) * angleA;
         normales[face[1]] += normalize(normal) * angleB;
         normales[face[2]] += normalize(normal) * angleC;
     }
 
-    // ¹éÒ»»¯´¦Àí
+    // å½’ä¸€åŒ–å¤„ç†
     for (auto& normal : normales) {
         normal = normalize(normal);
     }
@@ -120,9 +120,9 @@ int main() {
 
     vector<vec3> normales = calcularNormalesPorVertice(vertices, indices);
 
-    // Êä³ö·¨Ïß
+    // è¾“å‡ºæ³•çº¿
     for (size_t i = 0; i < normales.size(); ++i) {
-        cout << "¶¥µã " << i + 1 << " µÄ·¨Ïß: "
+        cout << "Normal del vÃ©rtice " << i + 1 << " : "
             << normales[i].x << ", " << normales[i].y << ", " << normales[i].z << endl;
     }
 
