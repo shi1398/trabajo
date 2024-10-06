@@ -1,18 +1,18 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
-//¼ÆËãÃ¿¸öÃæµÄ·¨ÏßÖµ
+//è®¡ç®—æ¯ä¸ªé¢çš„æ³•çº¿å€¼
 using namespace std;
 struct vec3 {
     double x, y, z;
     vec3(double x_ = 2.0f, double y_ = 2.0f, double z_ = 2.0f) : x(x_), y(y_), z(z_) {}
 
-     //ÏòÁ¿¼õ·¨£¬¼ÆËã±ßÏòÁ¿
+     //å‘é‡å‡æ³•ï¼Œè®¡ç®—è¾¹å‘é‡
     vec3 operator-(const vec3& v) const {
         return vec3(x - v.x, y - v.y, z - v.z);
     }
 };
-     //¼ÆËã²æ»ı£¬²æ»ı¹«Ê½£ºN = AB*AC£¬¼ÆËã·¨Ïß
+     //è®¡ç®—å‰ç§¯ï¼Œå‰ç§¯å…¬å¼ï¼šN = AB*ACï¼Œè®¡ç®—æ³•çº¿
     vec3 crossProduct(const vec3& v1, const vec3& v2) {
         return vec3(
         v1.y * v2.z - v1.z * v2.y,
@@ -20,13 +20,13 @@ struct vec3 {
         v1.x * v2.y - v1.y * v2.x
     );
 }
-     // ¹éÒ»»¯
+     // å½’ä¸€åŒ–
     vec3 normalize(const vec3& v) {
         double length = sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
-        if (length == 0) return vec3(0.0f, 0.0f, 0.0f);  // ·ÀÁã
+        if (length == 0) return vec3(0.0f, 0.0f, 0.0f);  // é˜²é›¶
         return vec3(v.x / length, v.y / length, v.z / length);
 }
-     //¼ÆËãÃ¿¸öÈı½ÇĞÎÃæµÄ·¨Ïß
+     //è®¡ç®—æ¯ä¸ªä¸‰è§’å½¢é¢çš„æ³•çº¿
     vector<vec3> calcularNormalesPorFaceta(const vector<vec3>& vertices, const vector<vector<int>>& indices) {
     vector<vec3> normales;
 
@@ -39,7 +39,7 @@ struct vec3 {
         vec3 AC = C - A;
       
         vec3 normal = crossProduct(AB, AC);
-         //½«·¨Ïß¹éÒ»»¯
+         //å°†æ³•çº¿å½’ä¸€åŒ–
         normales.push_back(normalize(normal));
     }
 
@@ -61,12 +61,12 @@ int main() {
         {1, 2, 3}   
     };
 
-    // ¼ÆËãÃ¿¸öÃæµÄ·¨Ïß
+    // è®¡ç®—æ¯ä¸ªé¢çš„æ³•çº¿
     vector<vec3> normales = calcularNormalesPorFaceta(vertices, indices);
 
-    // Êä³ö
+    // è¾“å‡º
     for (size_t i = 0; i < normales.size(); ++i) {
-        cout << "Ãæ " << i + 1 << " µÄ·¨Ïß: "
+        cout << "Normal de la faceta " << i + 1 << " : "
             << normales[i].x << ", " << normales[i].y << ", " << normales[i].z << endl;
     }
 
